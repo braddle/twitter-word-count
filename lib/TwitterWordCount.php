@@ -6,6 +6,9 @@ class TwitterWordCount
     const PARAMETER_NAME_QUERY_STRING = 'q';
     const PARAMETER_NAME_NUMBER_WORDS = 'l';
 
+    /**
+     * 
+     */
     public function run()
     {
         try
@@ -16,11 +19,7 @@ class TwitterWordCount
         $twitter_searcher->setQueryString($this->getQueryString());
         $tweets = $twitter_searcher->getTweets(3);
         
-        $ignorable_word = array('the', 'rt', 'in', 'a', 'and', 'to', 'for', 'of',
-                                'at', 'i', 'with', 'all', 'on', 'is', 'me', 'or',
-                                'if', 'it');
-        
-        $word_counter = new WordCounter($ignorable_word);
+        $word_counter = new WordCounter();
         
         foreach ($tweets as $tweet)
         {

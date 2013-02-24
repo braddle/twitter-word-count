@@ -4,13 +4,11 @@ class WordCounter
 {
     
     private $counts = array();
-    private $ignorable_words;
     
-    public function __construct($ignorable_words = array())
-    {
-        $this->ignorable_words = $ignorable_words;
-    }
-    
+    /**
+     * 
+     * @param string $string
+     */
     public function addString($string)
     {
         $string = strtolower(trim(str_replace(array('.', ',', '!', '?'), '', $string)));
@@ -21,7 +19,7 @@ class WordCounter
         {
             $word = strtolower($word);
             
-            if (is_numeric($word) || $this->isIgnorableWord($word) || empty($word))
+            if (is_numeric($word) || empty($word))
             {
                 continue;
             }
@@ -37,6 +35,11 @@ class WordCounter
         }
     }
     
+    /**
+     * 
+     * @param int $limit
+     * @return array
+     */
     public function getCounts($limit)
     {
         $counts= $this->counts;
@@ -47,15 +50,5 @@ class WordCounter
         
         return $counts;
     }
-    
-    /**
-     * 
-     * @param type $word
-     * @return boolean 
-     */
-    private function isIgnorableWord($word)
-    {
-        return in_array($word, $this->ignorable_words);
-    }
-    
+        
 } // WordCounter
