@@ -1,0 +1,9 @@
+<phpunit color="true"
+         bootstrap="bootstrap.php"
+         verbose="true">
+    <testsuites>
+        <testsuite name="Twitter Search Tests">
+            <directory>test/</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
