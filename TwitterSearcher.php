@@ -20,6 +20,7 @@ class TwitterSearcher
 
     /**
      * 
+     * @param integer $limit 
      * @return array of \Tweet
      */
     public function getTweets()
@@ -28,8 +29,7 @@ class TwitterSearcher
         $data = json_decode($json);
         $tweets = array();
         
-        foreach ($data->results
-                as $row)
+        foreach ($data->results as $row)
         {
             $tweet = new Tweet($row);
             $tweets[] = $tweet;

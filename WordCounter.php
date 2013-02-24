@@ -4,6 +4,12 @@ class WordCounter
 {
     
     private $counts = array();
+    private $ignorable_words;
+    
+    public function __construct($ignorable_words = array())
+    {
+        $this->ignorable_words = $ignorable_words;
+    }
     
     public function addString($string)
     {
@@ -13,6 +19,14 @@ class WordCounter
         
         foreach ($words as $word)
         {
+            $word = strtolower($word);
+            
+            if (is_numeric($word) || $this->isIgnorableWord($word) || 
+                empty($word) )
+            {
+                continue;
+            }
+            
             if (array_key_exists($word, $this->counts))
             {
                 $this->counts[$word]++;
@@ -24,11 +38,25 @@ class WordCounter
         }
     }
     
-    public function getCounts()
+    public function getCounts($limit)
     {
-        arsort($this->counts);
+        $counts= $this->counts;
         
-        return $this->counts;
+        arsort($counts);
+        
+        $counts = array_slice($counts, 0, $limit, true);
+        
+        return $counts;
     }
     
-}
+    /**
+     * 
+     * @param type $word
+     * @return boolean 
+     */
+    private function isIgnorableWord($word)
+    {
+        return in_array($word, $this->ignorable_words);
+    }
+    
+} // WordCounter

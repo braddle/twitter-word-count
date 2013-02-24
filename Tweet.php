@@ -16,4 +16,5 @@ class Tweet
     {
         return $this->text;
     }
-}
+    
+} // Tweet
