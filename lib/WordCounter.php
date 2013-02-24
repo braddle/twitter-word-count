@@ -6,6 +6,7 @@ class WordCounter
     private $counts = array();
     
     /**
+     * Take a string and stores a count of each word in it.
      * 
      * @param string $string
      */
@@ -36,6 +37,7 @@ class WordCounter
     }
     
     /**
+     * Returns an array of the current count of words ordered by number of uses of the words descending.
      * 
      * @param int $limit
      * @return array

@@ -6,13 +6,20 @@ class TwitterSearcher
     const URL_FORMAT = "http://search.twitter.com/search.json?";
 
     private $query_parameters = array();
-    
+
+    /**
+     * Set up the default values for the Twitter API require
+     */
     public function __construct()
     {
         $this->query_parameters['rpp']  = 100;
         $this->query_parameters['lang'] = 'en';
     }
     
+    /**
+     * Take the query to be used to search Twitter
+     * @param string $query_string
+     */
     public function setQueryString($query_string)
     {
         $this->query_parameters['q']  = urlencode($query_string);
@@ -41,6 +48,12 @@ class TwitterSearcher
         return $tweets;
     }
     
+    /**
+     * Return an array of Tweets.
+     * 
+     * @param integer $page
+     * @return array of \Tweet
+     */
     private function doGetTweets($page)
     {
         $json = file_get_contents($this->getRequestUrl($page));
@@ -56,6 +69,11 @@ class TwitterSearcher
         return $tweets;
     }
     
+    /**
+     * Returns the request URL for the twitter search API 
+     * @param integer $page
+     * @return string
+     */
     private function getRequestUrl($page)
     {
         $query_parameters = $this->query_parameters;

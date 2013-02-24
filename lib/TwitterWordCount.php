@@ -7,7 +7,7 @@ class TwitterWordCount
     const PARAMETER_NAME_NUMBER_WORDS = 'l';
 
     /**
-     * 
+     * Run the Twitter word count API action.
      */
     public function run()
     {
@@ -36,6 +36,12 @@ class TwitterWordCount
         }
     }
     
+    /**
+     * Returns the query string specified by the API consumer in the $_GET params.
+     * 
+     * @return string
+     * @throws Exception If the query string is not specified in the $_GET request.
+     */
     public function getQueryString()
     {
         if (!isset($_GET[self::PARAMETER_NAME_QUERY_STRING]) && 
@@ -47,6 +53,12 @@ class TwitterWordCount
         return $_GET[self::PARAMETER_NAME_QUERY_STRING];
     }
     
+    /**
+     * Retunrs the number of words required specified by the API consumer in the $_GET params.
+     * 
+     * @return integer
+     * @throws Exception If the number of words to be return is not specified in the $_GET request
+     */
     public function getNumberOfWords()
     {
         if (!isset($_GET[self::PARAMETER_NAME_NUMBER_WORDS]) && 
