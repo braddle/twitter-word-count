@@ -10,23 +10,22 @@ class JsonResponse
     const RESPONSE_CODE_ERROR   = 500;
     
     
-    public function sendSuccessResponse($content)
+    public function getSuccessResponse($content)
     {
-        $this->doSendJson($content);
+        return $this->getJson($content);
     }
     
-    public function sendErrorResponse($message)
+    public function getErrorResponse($message)
     {
         $content = array('status' => array('response_code' => self::RESPONSE_CODE_ERROR,
                                            'message'       => $message));
 
-        $this->doSendJson($content);
+        return $this->getJson($content);
     }
     
-    private function doSendJson($content)
+    private function getJson($content)
     {
-        echo json_encode($content);
-        exit;
+        return json_encode($content);
     }
     
 } // JsonResponse

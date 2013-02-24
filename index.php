@@ -1,9 +1,9 @@
 <?php
 
-
 function __autoload($class_name)
 {
-    include_once $class_name . '.php';
+    include_once 'lib/' . $class_name . '.php';
 }
 
-TwitterWordCount::run();
+$twitter_word_count = new TwitterWordCount();
+$twitter_word_count->run();

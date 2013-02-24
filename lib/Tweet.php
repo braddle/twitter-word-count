@@ -17,4 +17,9 @@ class Tweet
         return $this->text;
     }
     
+    public function getUserName()
+    {
+        return $this->user_name;
+    }
+    
 } // Tweet

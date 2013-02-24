@@ -21,8 +21,7 @@ class WordCounter
         {
             $word = strtolower($word);
             
-            if (is_numeric($word) || $this->isIgnorableWord($word) || 
-                empty($word) )
+            if (is_numeric($word) || $this->isIgnorableWord($word) || empty($word))
             {
                 continue;
             }
