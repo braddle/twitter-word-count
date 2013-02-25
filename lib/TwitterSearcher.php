@@ -2,6 +2,12 @@
 
 class TwitterSearcher
 {
+    const PARAM_RESULTS_PER_PAGE = 'count';
+    const PARAM_LANGUAGE         = 'lang';
+    const PARAM_RESULT_TYPE      = 'result_type';
+    const PARAM_QUERY            = 'q';
+    
+    const FUNCTION_SET_QUERY_PARAM = 'setQueryParam';
     
     const URL_FORMAT = "http://search.twitter.com/search.json?";
 
@@ -12,24 +18,13 @@ class TwitterSearcher
      */
     public function __construct()
     {
-        $this->query_parameters['rpp']  = 100;
-        $this->query_parameters['lang'] = 'en';
-    }
-    
-    /**
-     * Take the query to be used to search Twitter
-     * @param string $query_string
-     */
-    public function setQueryString($query_string)
-    {
-        $this->query_parameters['q']  = urlencode($query_string);
+        $this->setQueryParamLanguage('en');
+        $this->setQueryParamResultsPerPage(100);
+        $this->setQueryParamResultType('recent');
     }
     
     /**
      * Gets latest tweets for given query string.
-     * 
-     * Uses array_unique as we could be running the search for multiple request
-     * to get each page and could lead to duplicate tweets.
      * 
      * @param integer $limit 
      * @return array of \Tweet
@@ -40,11 +35,14 @@ class TwitterSearcher
         
         for ($page = 1; $page <= $pages_required; $page++)
         {
-            array_merge($tweets, $this->doGetTweets($page));
+            $tweets = array_merge($tweets, $this->doGetTweets($page));
         }
         
-        array_unique($tweets);
-        
+        if (empty($tweets))
+        {
+            throw new Exception('No tweets found for query: ' . $this->query_parameters['q']);
+        }
+                
         return $tweets;
     }
     
@@ -57,9 +55,10 @@ class TwitterSearcher
     private function doGetTweets($page)
     {
         $json = file_get_contents($this->getRequestUrl($page));
+
         $data = json_decode($json);
         $tweets = array();
-        
+
         foreach ($data->results as $row)
         {
             $tweet = new Tweet($row);
@@ -77,9 +76,28 @@ class TwitterSearcher
     private function getRequestUrl($page)
     {
         $query_parameters = $this->query_parameters;
-        $query_parameters[''] = $page;
+        $query_parameters['page'] = $page;
         
         return self::URL_FORMAT . http_build_query($query_parameters);
+    }
+
+    /**
+     * 
+     * @param string $name
+     * @param mixed $arguments
+     */
+    public function __call($name, $arguments)
+    {
+        if (strpos($name, self::FUNCTION_SET_QUERY_PARAM) !== false)
+        {
+            $constant = 'self::PARAM_' . 
+                        strtoupper(unCamelCase(substr($name, strlen(self::FUNCTION_SET_QUERY_PARAM))));
+            
+            if (defined($constant))
+            {
+                $this->query_parameters[constant($constant)] = $arguments[0];
+            }
+        }
     }
     
 } // TwitterSearcher

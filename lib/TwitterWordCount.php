@@ -4,36 +4,38 @@ class TwitterWordCount
 {
     
     const PARAMETER_NAME_QUERY_STRING = 'q';
-    const PARAMETER_NAME_NUMBER_WORDS = 'l';
+    const PARAMETER_NAME_NUMBER_WORDS = 'n';
 
     /**
      * Run the Twitter word count API action.
      */
     public function run()
     {
+        $json = null;
+        
         try
         {
-        $json_response = new JsonResponse();
+            $json_response = new JsonResponse();
         
-        $twitter_searcher = new TwitterSearcher();
-        $twitter_searcher->setQueryString($this->getQueryString());
-        $tweets = $twitter_searcher->getTweets(3);
+            $twitter_searcher = new TwitterSearcher();
+            $twitter_searcher->setQueryParamQuery($this->getQueryString());
+            $tweets = $twitter_searcher->getTweets(3);
         
-        $word_counter = new WordCounter();
+            $word_counter = new WordCounter();
         
-        foreach ($tweets as $tweet)
-        {
-            $word_counter->addString($tweet->getText());
-        }
+            foreach ($tweets as $tweet)
+            {
+                $word_counter->addString($tweet->getText());
+            }
        
-        echo $json_response->getSuccessResponse($word_counter->getCounts($this->getNumberOfWords()));
-        exit;
+            $json =  $json_response->getSuccessResponse($word_counter->getCounts($this->getNumberOfWords()));
         }
         catch (Exception $e)
         {
-            echo $json_response->getErrorResponse($e->getMessage());
-            exit;
+            $json = $json_response->getErrorResponse($e->getMessage());
         }
+        
+        return $json;
     }
     
     /**
