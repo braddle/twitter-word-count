@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * 
+ * @method null setQueryParamLanguage(string $language) Takes a ISO 639-1 languge code to pass to the twitter API call
+ * @method null setQueryParamResultsPerPage(integer $rpp) Takes a number of results required per twitter API request
+ * @method null setQueryParamResultType(string $result_type) Takes the type of search result required from the twitter API
+ * @method null setQueryQuery(string $query) Taker the query to pass to the twitter API
+ */
 class TwitterSearcher
 {
     const PARAM_RESULTS_PER_PAGE = 'count';
